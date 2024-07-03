@@ -19,12 +19,28 @@ function validate() {
 }
 
 function getLS() {
- let infoLS = [];
-if( localStorage.getItem('infoLS')){
-infoLS.JSON.parse(localStorage.getItem('infoLS'))
+  let infoLS = [];
+  if (localStorage.getItem("infoLS")) {
+    infoLS = JSON.parse(localStorage.getItem('infoLS'));
+  }
+  return infoLS;
 }
- return infoLS ;
+
+function createitem(info) {
+  return `
+<div id="listitem">
+<div id="infopart">${info.information}</div>
+<div id="buttons"><button id="edit" data-id = "${info.id},edit">EDIT</button><button id="delete" data-id = "${info.id}">DELETE</button></div>
+</div>
+`;
 }
+document.addEventListener('DOMContentLoaded', function(){
+let getlS = getLS();
+getLS.length > 0 && getLS.forEach(element => {
+    let item = createitem(element);
+    wrapper.innerHTML += item;
+});
+})
 
 button &&
   button.addEventListener("click", function (event) {
@@ -35,9 +51,12 @@ button &&
     }
     let infoLS = getLS();
     let info = {
-    information: keeper.value,
-    id: Date.now()
-    }
-    infoLS.push(info)
-    localStorage.setItem('infoLS',JSON.stringify(infoLS));
+      information: keeper.value,
+      id: Date.now()
+    };
+    infoLS.push(info);
+    localStorage.setItem("infoLS", JSON.stringify(infoLS));
+    form.reset();
+    let infoo = createitem(info);
+    wrapper.innerHTML += infoo;
   });
